@@ -1,0 +1,23 @@
+//multiple operations:
+
+//first iteration
+//1. set the base num
+//2. set a temp operator
+//3. set a temp addition num
+//4. run calc on base, operator and addNum and set base to new value
+
+//every subsequent iteration, until no extra operator
+//1. update operator
+//2. update addition num
+//3. run calc on base/operator/addnum again
+
+//parentheses
+
+
+
+/*follow fab's rules:
+1 - Avoid more than 2 indentations 
+2 - Avoid to use if inside an if
+3 - Avoid to use else statement
+4 - Use the least indentation for happy path
+*/

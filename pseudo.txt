@@ -28,6 +28,12 @@
 //splice/slice from ( -> )
 //delete count param -> index of ) + 1 (splice doesn't take end)
 
+//issues:
+//operators before a parens are left in the wrong order
+//e.g. 5 + (5+5) becomes (5+5) 5 +
+//reverse the remaining array?
+
+
 /*follow fab's rules:
 1 - Avoid more than 2 indentations 
 2 - Avoid to use if inside an if

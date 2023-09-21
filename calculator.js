@@ -14,8 +14,19 @@ alert(`splice: ${parens}`);
 
 //issues:
 //operators before a parens are left in the wrong order
-//e.g. 5 + (5+5) becomes (5+5) + 5
-//multiple parens
+//e.g. 5 + (5+5) becomes (5+5) 5 +
+
+//handle multiple (infinite) parens
+//init sum/operator -> first paren calculation uses
+//the init sum/operator.
+//but -> two paren sums multiply each other.
+
+//1. handle paren operations
+//(5+5),(5+5) becomes (5+5) * (5+5)
+//(5+5),(5+5), +, 5 = ((5+5) * (5+5)) + 5
+//(5+5), (5+5), (5+5), (5+5),  +, 5
+
+//2. handle regular operations (apply to result of paren operations)
 
 let base = 0;
 let operator = "";

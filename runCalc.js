@@ -1,10 +1,8 @@
 //changing to calculator class ->
 //How do you import the class? How do you make runCalc a module?
 
-import Calculator from "./calculator";
+import Calculator from "./calculator.js";
 
-const runCalc = () => {
-	const calculator = new Calculator();
-	calculator.promptUser();
-};
-export default runCalc;
+const calculator = new Calculator();
+
+calculator.promptUser();

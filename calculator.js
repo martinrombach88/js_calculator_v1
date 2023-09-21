@@ -17,28 +17,29 @@ export default class Calculator {
 				return 0;
 		}
 	};
-	//output -> runs array with parens first
-
-	//issues:
-	//operators before a parens are left in the wrong order
-	//e.g. 5 + (5+5) becomes (5+5) 5 +
-
-	//handle multiple (infinite) parens
-	//init sum/operator -> first paren calculation uses
-	//the init sum/operator.
-	//but -> two paren sums multiply each other.
-
-	//1. handle paren operations
-	//(5+5),(5+5) becomes (5+5) * (5+5)
-	//(5+5),(5+5), +, 5 = ((5+5) * (5+5)) + 5
-	//(5+5), (5+5), (5+5), (5+5),  +, 5 = ((5+5) * (5+5) * (5+5) * (5+5))
-
-	//2. handle regular operations (apply to result of paren operations)
-
-	// Uncaught TypeError: parens is not iterable
-	//     at calculator.js:60:17
 
 	calculateParen = (array) => {
+		//output -> runs array with parens first
+
+		//issues:
+		//operators before a parens are left in the wrong order
+		//e.g. 5 + (5+5) becomes (5+5) 5 +
+
+		//handle multiple (infinite) parens
+		//init sum/operator -> first paren calculation uses
+		//the init sum/operator.
+		//but -> two paren sums multiply each other.
+
+		//1. handle paren operations
+		//(5+5),(5+5) becomes (5+5) * (5+5)
+		//(5+5),(5+5), +, 5 = ((5+5) * (5+5)) + 5
+		//(5+5), (5+5), (5+5), (5+5),  +, 5 = ((5+5) * (5+5) * (5+5) * (5+5))
+
+		//2. handle regular operations (apply to result of paren operations)
+
+		// Uncaught TypeError: parens is not iterable
+		//     at calculator.js:60:17
+
 		//only works for single occurrence.
 		//Could create array of all paren operations,
 		//calculate and return. (while ?)
@@ -58,8 +59,8 @@ export default class Calculator {
 	promptUser = () => {
 		let userCalculation = prompt("Please enter your calculation");
 		let calcArray = userCalculation.match(this.regex);
-		// let parens = this.calculateParen(calcArray);
-		// calcArray = [parens, ...calcArray];
+		let parens = this.calculateParen(calcArray);
+		calcArray = [parens, ...calcArray];
 		this.runAllOperations(calcArray);
 	};
 

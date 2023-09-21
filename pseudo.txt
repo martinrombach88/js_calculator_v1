@@ -1,3 +1,9 @@
+//input:
+//Regex breakdown: (/\d+|[\(\)\+\-\*\//]+/g);
+//\d+ all occurrences of a number
+//[\(\)\+\-\*\//]+ all occurences of the characters within []
+//multiple assertions joined with |
+
 //multiple operations:
 
 //first iteration
@@ -13,7 +19,14 @@
 
 //parentheses
 
+//if calc includes parens, these calcs go first, wherever they are in the list.
 
+//should this be handled at the input or output stage?
+
+//input -> regex takes the parens. function reorders the parens + contents so they go first
+//output -> runs array with parens first
+//splice/slice from ( -> )
+//delete count param -> index of ) + 1 (splice doesn't take end)
 
 /*follow fab's rules:
 1 - Avoid more than 2 indentations 

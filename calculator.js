@@ -18,58 +18,56 @@ export default class Calculator {
 		}
 	};
 
-	calculateParen = (array) => {
-		//output -> runs array with parens first
-
-		//issues:
-		//operators before a parens are left in the wrong order
-		//e.g. 5 + (5+5) becomes (5+5) 5 +
-
-		//handle multiple (infinite) parens
-		//init sum/operator -> first paren calculation uses
-		//the init sum/operator.
-		//but -> two paren sums multiply each other.
-
-		//1. handle paren operations
-		//(5+5),(5+5) becomes (5+5) * (5+5)
-		//(5+5),(5+5), +, 5 = ((5+5) * (5+5)) + 5
-		//(5+5), (5+5), (5+5), (5+5),  +, 5 = ((5+5) * (5+5) * (5+5) * (5+5))
-
-		//2. handle regular operations (apply to result of paren operations)
-
-		// Uncaught TypeError: parens is not iterable
-		//     at calculator.js:60:17
-
-		//only works for single occurrence.
-		//Could create array of all paren operations,
-		//calculate and return. (while ?)
-
-		//all paren operations multiply each other.
-
+	//all paren operations multiply each other.
+	runParenOperations = (array) => {
+		let base = 1;
 		let parens = array.splice(array.indexOf("("), array.indexOf(")") + 1);
 
-		//delete 0, -1
-		parens.shift();
-		parens.pop();
-		parens = this.calculate(parens[1], parens[0], parens[2]);
+		while (parens.includes(")(")) {
+			let c = parens.splice(0, parens.indexOf(")(") + 1);
+			console.log(c);
+			if (c[0] == "(") {
+				c.shift();
+			}
+			c.pop();
+			console.log(c);
+			//right now, arr isn't being taken by the other method.
+			// base = base * this.runRegularOperations(c);
+		}
+		// let cut1 = parens.splice(0, parens.indexOf(")(") + 1);
+		// let cut2 = parens.splice(0, parens.indexOf(")(") + 1);
 
-		return parens;
+		// console.log("arr", array);
+		/*example: (1+1)(1+1+1)(1+1)
+		)( is the end of one sum and start of another
+
+
+
+		1. base = 1
+		2. loop ->
+			3. c = calculate(1+1)
+			4. base = base * c
+		
+		return base
+		*/
+		// return this.calculate(parens[1], parens[0], parens[2]);
 	};
 
 	promptUser = () => {
 		let userCalculation = prompt("Please enter your calculation");
 		let calcArray = userCalculation.match(this.regex);
-		let parens = this.calculateParen(calcArray);
-		calcArray = [parens, ...calcArray];
-		this.runAllOperations(calcArray);
+		let parens = this.runParenOperations(calcArray);
+		// calcArray = parens != 0 ? [parens, ...calcArray] : calcArray;
+		// let base = this.runRegularOperations(calcArray);
+		// alert(`${userCalculation} = ${base}`);
 	};
 
-	runAllOperations = (calcArray) => {
+	runRegularOperations = (calcArray) => {
 		let base = 0;
 		let operator = "";
 		let initialBaseSet = false;
 		let initialOperatorSet = false;
-
+		alert("arr", calcArray);
 		for (let current in calcArray) {
 			let item = calcArray[current];
 
@@ -100,6 +98,5 @@ export default class Calculator {
 				continue;
 			}
 		}
-		alert(`${calcArray.join("")} = ${base}`);
 	};
 }

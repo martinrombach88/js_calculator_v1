@@ -1,0 +1,66 @@
+//input:
+//Regex breakdown: (/\d+|[\(\)\+\-\*\//]+/g);
+//\d+ all occurrences of a number
+//[\(\)\+\-\*\//]+ all occurences of the characters within []
+//multiple assertions joined with |
+
+//multiple operations:
+
+//first iteration
+//1. set the base num
+//2. set a temp operator
+//3. set a temp addition num
+//4. run calc on base, operator and addNum and set base to new value
+
+//every subsequent iteration, until no extra operator
+//1. update operator
+//2. update addition num
+//3. run calc on base/operator/addnum again
+
+//parentheses
+
+//if calc includes parens, these calcs go first, wherever they are in the list.
+
+//should this be handled at the input or output stage?
+
+//input -> regex takes the parens. function reorders the parens + contents so they go first
+//output -> runs array with parens first
+//splice/slice from ( -> )
+//delete count param -> index of ) + 1 (splice doesn't take end)
+
+//issues:
+//operators before a parens are left in the wrong order
+//e.g. 5 + (5+5) becomes (5+5) 5 +
+//reverse the remaining array?
+
+//output -> runs array with parens first
+
+//issues:
+//operators before a parens are left in the wrong order
+//e.g. 5 + (5+5) becomes (5+5) 5 +
+
+//handle multiple (infinite) parens
+//init sum/operator -> first paren calculation uses
+//the init sum/operator.
+//but -> two paren sums multiply each other.
+
+//1. handle paren operations
+//(5+5),(5+5) becomes (5+5) * (5+5)
+//(5+5),(5+5), +, 5 = ((5+5) * (5+5)) + 5
+//(5+5), (5+5), (5+5), (5+5),  +, 5 = ((5+5) * (5+5) * (5+5) * (5+5))
+
+//2. handle regular operations (apply to result of paren operations)
+
+// Uncaught TypeError: parens is not iterable
+//     at calculator.js:60:17
+
+//only works for single occurrence.
+//Could create array of all paren operations,
+//calculate and return. (while ?)
+
+/*follow fab's rules:
+1 - Avoid more than 2 indentations 
+2 - Avoid to use if inside an if
+3 - Avoid to use else statement
+4 - Use the least indentation for happy path
+*/

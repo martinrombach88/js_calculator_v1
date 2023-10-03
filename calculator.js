@@ -2,8 +2,25 @@ export default class Calculator {
 	constructor() {
 		this.regex = /\d+|[\(\)\+\-\*\//]+/g;
 	}
+	/*Changes:
+		promptuser is not an appropriate top level function name
+		Errors in the parens functions aren't handled in depth.
+		
+		Currently the parens function operates on bad logic.
+		It's important to use an infix postfix 
+	*/
 
-	calculate = (operator, base, newnum) => {
+	calculate = () => {
+		let userCalculation = prompt("Please enter your calculation");
+		let calcArray = userCalculation.match(this.regex);
+		// console.log(calcArray)
+		let parens = this.runParenOperations(calcArray);
+		calcArray = parens != 0 ? [parens, ...calcArray] : calcArray;
+		let result = this.runRegularOperations(calcArray);
+		alert(`${userCalculation} = ${result}`);
+	};
+
+	runOperation = (operator, base, newnum) => {
 		switch (operator) {
 			case "+":
 				return parseFloat(base) + parseFloat(newnum);
@@ -18,7 +35,7 @@ export default class Calculator {
 		}
 	};
 
-	//all paren operations multiply each other.
+
 	runParenOperations = (array) => {
 		let base = 1;
 		let parens = array.splice(array.indexOf("("), array.indexOf(")") + 1);
@@ -35,37 +52,23 @@ export default class Calculator {
 		base = base * this.runRegularOperations(parens);
 		return base;
 	};
-	//(1+1)(1+1+1)(1+1) +1
-	promptUser = () => {
-		let userCalculation = prompt("Please enter your calculation");
-		let calcArray = userCalculation.match(this.regex);
-		let parens = this.runParenOperations(calcArray);
-		calcArray = parens != 0 ? [parens, ...calcArray] : calcArray;
-		let base = this.runRegularOperations(calcArray);
-		alert(`${userCalculation} = ${base}`);
-	};
-
-	testOperations = (array) => {
-		console.log(array);
-	};
 
 	runRegularOperations = (calcArray) => {
-		let base = 0;
+		let result = 0;
 		let operator = "";
-		let initialBaseSet = false;
+		let initialResultSet = false;
 		let initialOperatorSet = false;
 
 		for (let current in calcArray) {
 			let item = calcArray[current];
-
-			if (!initialBaseSet && isNaN(item)) {
+			if (!initialResultSet && isNaN(item)) {
 				alert("Invalid calculation. Enter a number first.");
 				break;
 			}
 
-			if (!initialBaseSet) {
-				base = item;
-				initialBaseSet = true;
+			if (!initialResultSet) {
+				result = item;
+				initialResultSet = true;
 				continue;
 			}
 
@@ -75,16 +78,16 @@ export default class Calculator {
 				continue;
 			}
 
-			if (initialBaseSet && initialOperatorSet && isNaN(item)) {
+			if (initialResultSet && initialOperatorSet && isNaN(item)) {
 				operator = item;
 				continue;
 			}
 
-			if (initialBaseSet && initialOperatorSet && !isNaN(item)) {
-				base = this.calculate(operator, base, item);
+			if (initialResultSet && initialOperatorSet && !isNaN(item)) {
+				result = this.runOperation(operator, result, item);
 				continue;
 			}
 		}
-		return base;
+		return result;
 	};
 }

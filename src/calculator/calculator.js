@@ -1,12 +1,5 @@
 module.exports = class Calculator {
 //export default class Calculator {
-	/*Changes:
-		promptuser is not an appropriate top level function name
-		Errors in the parens functions aren't handled in depth.
-		
-		Currently the parens function operates on bad logic.
-		It's important to use an infix postfix 
-	*/
 
 	calculate = () => {
 		let userCalculation = prompt("Please enter your calculation");
@@ -19,9 +12,21 @@ module.exports = class Calculator {
 
 	getInputCalculationArray = (userInput) => {
 		const regex = /\d+|[\(\)\+\-\*\//]+/g;
-		const array = userInput.match(regex);
+		const operators = /[\(\)\+\-\*\//]+/g;
 
-		//you need to work here to 
+		let array = userInput.match(regex)
+		let temp;
+		for (let c in array) {
+			let char = array[c]
+			if (char.length > 0 && char.match(operators)) {
+				let temp = char.split("")
+				
+			}
+			//what do you do with the array?
+			//add char to the array at the index of char
+			
+		}	
+		return temp
 	}
 
 	runOperation = (operator, base, newnum) => {

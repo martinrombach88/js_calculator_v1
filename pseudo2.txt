@@ -1,0 +1,9 @@
+Next:
+1. Develop tests for input functions
+2. Add infix/postfix functions (you can expect to change all output functions)
+
+Order:
+1. Take input from user 
+2. Generate Input array 
+3. Reorder array into post fix order 
+4. Run operations in 'post fix way' on reordered array and return result

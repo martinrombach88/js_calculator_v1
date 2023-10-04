@@ -15,18 +15,8 @@ module.exports = class Calculator {
 		const operators = /[\(\)\+\-\*\//]+/g;
 
 		let array = userInput.match(regex)
-		let temp;
-		for (let c in array) {
-			let char = array[c]
-			if (char.length > 0 && char.match(operators)) {
-				let temp = char.split("")
-				
-			}
-			//what do you do with the array?
-			//add char to the array at the index of char
-			
-		}	
-		return temp
+		array = array.flatMap((char) => (char.length > 0 && char.match(operators) ? char.split('') : char));
+		return array
 	}
 
 	runOperation = (operator, base, newnum) => {

@@ -17,4 +17,8 @@ describe("Calculator", () => {
     test('Separate )( String into array', () => {
         expect(testCalc.getInputCalculationArray(')(')).toStrictEqual([')','('])
         })
+    // test('Expect output', () => {
+    //     expect(testCalc.getInputCalculationArray('(1+1)(1+1)')).anything()
+    // })
+    
 })

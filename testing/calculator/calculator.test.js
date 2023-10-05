@@ -3,21 +3,26 @@ const Calculator = require("../../src/calculator/calculator")
 describe("Calculator", () => {
     const testCalc = new Calculator()
 
-    test('Separate 1+1 String into array', () => {
-        expect(testCalc.getInputCalculationArray("1+1")).toStrictEqual(['1', '+', '1'])
+    test('stackMustPop -> Test operator ranks * > + as true', () => {
+        expect(testCalc.stackMustPop("*", "+")).toBe(true)
+    })
+
+    test('stackMustPop -> function ranks + > * as false', () => {
+        expect(testCalc.stackMustPop("+", "*")).toBe(false)
+    })
+    test('getInputSeparate 1+1 String into array', () => {
+        expect(testCalc.getInputArray("1+1")).toStrictEqual(['1', '+', '1'])
         })
 
     test('Separate (1+1)(1+1) String into array', () => {
-        expect(testCalc.getInputCalculationArray('(1+1)(1+1)')).toStrictEqual(['(','1','+','1',')','(','1','+','1',')'])
+        expect(testCalc.getInputArray('(1+1)(1+1)')).toStrictEqual(['(','1','+','1',')','(','1','+','1',')'])
         })
 
     test('Separate )( String into array', () => {
-        expect(testCalc.getInputCalculationArray(')(')).toStrictEqual([')','('])
+        expect(testCalc.getInputArray(')(')).toStrictEqual([')','('])
         })
 
-    // test('Expect output', () => {
-    //     expect(testCalc.getInputCalculationArray('(1+1)(1+1)')).anything()
-    // })
+
     test('Convert Infix A + B * C + D to Postfix A B C * + D +', () => {
         expect(testCalc.convertInfixToPostfix(['2','+','3','*','2','+','3'])).toStrictEqual(['2','3','2','*','+','3','+'])
     })
@@ -30,11 +35,5 @@ describe("Calculator", () => {
     expect(testCalc.convertInfixToPostfix(['1','+','1'])).toStrictEqual([1, 1, '+'])
     })
 
-    test('Test operator ranks * > +', () => {
-        expect(testCalc.stackMustPop("*", "+")).toBe(true)
-    })
 
-    test('Test operator ranks + > *', () => {
-        expect(testCalc.stackMustPop("+", "*")).toBe(false)
-    })
 })

@@ -3,14 +3,14 @@ module.exports = class Calculator {
 
 	calculate = () => {
 		let userCalculation = prompt("Please enter your calculation");
-		let calcArray = this.getInputCalculationArray(userCalculation)
+		let calcArray = this.getInputArray(userCalculation)
 		let parens = this.runParenOperations(calcArray);
 		calcArray = parens != 0 ? [parens, ...calcArray] : calcArray;
 		let result = this.runRegularOperations(calcArray);
 		alert(`${userCalculation} = ${result}`);
 	};
 
-	getInputCalculationArray = (userInput) => {
+	getInputArray = (userInput) => {
 		const regex = /\d+|[\(\)\+\-\*\//]+/g;
 		const operators = /[\(\)\+\-\*\//]+/g;
 		return userInput.match(regex).flatMap((char) => (char.length > 0 && char.match(operators) ? char.split('') : char));
@@ -42,24 +42,30 @@ module.exports = class Calculator {
 			let temp = parseInt(c);
 
 			//rule one - if operand, push to postfix array
-			if (!isNaN(temp)) {
-				postfixResult.push(temp)
-			} 
+			// if (Number.isInteger(temp)) {
+			// 	postfixResult.push(temp)
+			// 	continue
+			// } 
 			
-			//if stack is empty and operator, push to stack
-			if(opStack.length === 0 && isNaN(temp)) {
-				opStack.push(c)
-			}
+			
+			// if(isNaN(temp)) {
+			// 	opStack.push(c)
+			// 	continue
+			// }
 
-			if(this.stackMustPop(opStack[-1], c)) {
-				postfixResult.push(opStack.pop())
-			}
+			//what other occasions do you pop?
+
+			// if(this.stackMustPop(opStack[-1], c)) {
+			// 	postfixResult.push(opStack.pop())
+			// 	continue
+			// }
 			
 
 
 		}
+
 		
-		return postfixResult;
+		return opStack
 
 	}
 

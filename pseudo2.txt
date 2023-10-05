@@ -24,4 +24,8 @@ the higher element can be added.
 
 4. If there is a left bracket, push element to stack
 
-5. If there is a right bracket...
+5. Right bracket?
+
+TDD:- 
+infix/postfix has a lot of moving parts. break it down into individual output you expect.
+1. opStack should collect the operators (once it's working, test for more.)

@@ -10,30 +10,35 @@ describe("Calculator", () => {
     test('stackMustPop -> function ranks + > * as false', () => {
         expect(testCalc.stackMustPop("+", "*")).toBe(false)
     })
-    test('getInputSeparate 1+1 String into array', () => {
+    test('getInputArray -> 1+1 becomes [1 + 1]', () => {
         expect(testCalc.getInputArray("1+1")).toStrictEqual(['1', '+', '1'])
         })
 
-    test('Separate (1+1)(1+1) String into array', () => {
+    test('getInputArray -> (1+1)(1+1) becomes [ ( 1 + 1 ) ( 1 + 1 ) ]', () => {
         expect(testCalc.getInputArray('(1+1)(1+1)')).toStrictEqual(['(','1','+','1',')','(','1','+','1',')'])
         })
 
-    test('Separate )( String into array', () => {
+    test('getInputArray -> )( becomes [ ) ( ]', () => {
         expect(testCalc.getInputArray(')(')).toStrictEqual([')','('])
         })
 
 
-    test('Convert Infix A + B * C + D to Postfix A B C * + D +', () => {
-        expect(testCalc.convertInfixToPostfix(['2','+','3','*','2','+','3'])).toStrictEqual(['2','3','2','*','+','3','+'])
+    // test('convertInfixToPostfix -> Infix A + B * C + D to Postfix A B C * + D +', () => {
+    //     expect(testCalc.convertInfixToPostfix(['2','+','3','*','2','+','3'])).toStrictEqual(['2','3','2','*','+','3','+'])
+    // })
+
+    // test('convertInfixToPostfix -> Infix (A + B) * (C + D) to Postfix A B + C D + *', () => {
+    //     expect(testCalc.convertInfixToPostfix(['(','5','+','5',')','*','(','5','+','5',')'])).toStrictEqual([5,5,'+',5,5,'+','*'])
+    // })
+
+
+    test('convertInfixToPostfix -> postfix collects all numbers and opstack collects all operators on loop', () => {
+        expect(testCalc.convertInfixToPostfix(['1', '+', '1', '*', '1', '/','1','-', '1'])).toStrictEqual(
+            {0: [1,1,1,1,1],
+            1: ['+','*','/','-']})
     })
 
-    test('Convert Infix (A + B) * (C + D) to Postfix A B + C D + *', () => {
-        expect(testCalc.convertInfixToPostfix(['(','5','+','5',')','*','(','5','+','5',')'])).toStrictEqual([5,5,'+',5,5,'+','*'])
-    })
 
-    test('test stack', () => {
-    expect(testCalc.convertInfixToPostfix(['1','+','1'])).toStrictEqual([1, 1, '+'])
-    })
 
 
 })

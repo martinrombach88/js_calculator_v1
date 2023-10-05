@@ -8,7 +8,13 @@ Order:
 3. Reorder array into post fix order 
 4. Run operations in 'post fix way' on reordered array and return result
 
+Stack Guide
+Use pop rather than shift (shift has to reindex)
+The end is the top, and the start is the bottom (lifo)
+
 Infix > Postfix Guide (No code)
+
+
 Rules:
 1. Priorities must be followed.
 High - ^
@@ -28,4 +34,5 @@ the higher element can be added.
 
 TDD:- 
 infix/postfix has a lot of moving parts. break it down into individual output you expect.
-1. opStack should collect the operators (once it's working, test for more.)
+1. opStack should collect the operators O 
+2. 

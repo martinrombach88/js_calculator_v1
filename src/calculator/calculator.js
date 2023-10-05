@@ -16,6 +16,10 @@ module.exports = class Calculator {
 		return userInput.match(regex).flatMap((char) => (char.length > 0 && char.match(operators) ? char.split('') : char));
 	}
 
+	convertInfixToPostfix = () => {
+		// return ['5','5','+','5','5','+','*']
+	}
+
 	runOperation = (operator, base, newnum) => {
 		switch (operator) {
 			case "+":

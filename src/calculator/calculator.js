@@ -1,12 +1,5 @@
 module.exports = class Calculator {
 //export default class Calculator {
-	/*Changes:
-		promptuser is not an appropriate top level function name
-		Errors in the parens functions aren't handled in depth.
-		
-		Currently the parens function operates on bad logic.
-		It's important to use an infix postfix 
-	*/
 
 	calculate = () => {
 		let userCalculation = prompt("Please enter your calculation");
@@ -19,9 +12,12 @@ module.exports = class Calculator {
 
 	getInputCalculationArray = (userInput) => {
 		const regex = /\d+|[\(\)\+\-\*\//]+/g;
-		const array = userInput.match(regex);
+		const operators = /[\(\)\+\-\*\//]+/g;
+		return userInput.match(regex).flatMap((char) => (char.length > 0 && char.match(operators) ? char.split('') : char));
+	}
 
-		//you need to work here to 
+	convertInfixToPostfix = () => {
+		// return ['5','5','+','5','5','+','*']
 	}
 
 	runOperation = (operator, base, newnum) => {

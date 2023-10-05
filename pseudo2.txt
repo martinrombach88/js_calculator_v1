@@ -3,7 +3,25 @@ Next:
 2. Add infix/postfix functions (you can expect to change all output functions)
 
 Order:
-1. Take input from user 
-2. Generate Input array 
+1. Take input from user O
+2. Generate Input array O
 3. Reorder array into post fix order 
 4. Run operations in 'post fix way' on reordered array and return result
+
+Infix > Postfix Guide (No code)
+Rules:
+1. Priorities must be followed.
+High - ^
+Mid - * / 
+Low - + -
+
+2. No 2 operators of same priority can stay together. In case of meeting,
+pop the top element and add to postfix.
+
+3. If the top element of stack is higher than current element,
+pop the top element and add to postfix. If the top element is lower,
+the higher element can be added.
+
+4. If there is a left bracket, push element to stack
+
+5. If there is a right bracket...

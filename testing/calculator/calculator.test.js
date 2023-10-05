@@ -7,9 +7,6 @@ describe("Calculator", () => {
         expect(testCalc.getInputCalculationArray("1+1")).toStrictEqual(['1', '+', '1'])
         })
 
-    // test('Separate (1+1)(1+1)((1+1)(1+1))(1+1) String into array', () => {
-    //     expect(testCalc.getInputCalculationArray('(1+1)(1+1)((1+1)(1+1))(1+1)')).toStrictEqual(['(','1', '+', '1',')','(','1', '+', '1',')','(','(','1', '+', '1',')','(','1', '+', '1',')' ])
-    //     })
     test('Separate (1+1)(1+1) String into array', () => {
         expect(testCalc.getInputCalculationArray('(1+1)(1+1)')).toStrictEqual(['(','1','+','1',')','(','1','+','1',')'])
         })
@@ -17,6 +14,7 @@ describe("Calculator", () => {
     test('Separate )( String into array', () => {
         expect(testCalc.getInputCalculationArray(')(')).toStrictEqual([')','('])
         })
+
     // test('Expect output', () => {
     //     expect(testCalc.getInputCalculationArray('(1+1)(1+1)')).anything()
     // })
@@ -25,7 +23,18 @@ describe("Calculator", () => {
     })
 
     test('Convert Infix (A + B) * (C + D) to Postfix A B + C D + *', () => {
-        expect(testCalc.convertInfixToPostfix(['(','5','+','5',')','*','(','5','+','5',')'])).toStrictEqual(['5','5','+','5','5','+','*'])
+        expect(testCalc.convertInfixToPostfix(['(','5','+','5',')','*','(','5','+','5',')'])).toStrictEqual([5,5,'+',5,5,'+','*'])
     })
 
+    test('test stack', () => {
+    expect(testCalc.convertInfixToPostfix(['1','+','1'])).toStrictEqual([1, 1, '+'])
+    })
+
+    test('Test operator ranks * > +', () => {
+        expect(testCalc.stackMustPop("*", "+")).toBe(true)
+    })
+
+    test('Test operator ranks + > *', () => {
+        expect(testCalc.stackMustPop("+", "*")).toBe(false)
+    })
 })

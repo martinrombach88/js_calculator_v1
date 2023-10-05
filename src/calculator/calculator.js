@@ -16,8 +16,51 @@ module.exports = class Calculator {
 		return userInput.match(regex).flatMap((char) => (char.length > 0 && char.match(operators) ? char.split('') : char));
 	}
 
-	convertInfixToPostfix = () => {
-		// return ['5','5','+','5','5','+','*']
+	stackMustPop = (stackTopElement, newElement) => {
+		const operatorRanks = {
+			'^': 3,
+			'*': 2,
+			'/': 2, 
+			'+': 1,
+			'-': 1
+		}
+		if (operatorRanks[stackTopElement] == operatorRanks[newElement]) {
+			return true;
+		}
+		return operatorRanks[stackTopElement] > operatorRanks[newElement]
+	}
+
+	convertInfixToPostfix = (calcArray) => {
+		const postfixResult = []
+		const opStack = []
+		//use pop rather than shift (shift has to reindex)
+		//the end is the top, and the start is the bottom (lifo)
+		//('Convert Infix (A + B) * (C + D) to Postfix A B + C D + *'
+		
+		for (let current in calcArray) {
+			let c = calcArray[current];
+			let temp = parseInt(c);
+
+			//rule one - if operand, push to postfix array
+			if (!isNaN(temp)) {
+				postfixResult.push(temp)
+			} 
+			
+			//if stack is empty and operator, push to stack
+			if(opStack.length === 0 && isNaN(temp)) {
+				opStack.push(c)
+			}
+
+			if(this.stackMustPop(opStack[-1], c)) {
+				postfixResult.push(opStack.pop())
+			}
+			
+
+
+		}
+		
+		return postfixResult;
+
 	}
 
 	runOperation = (operator, base, newnum) => {
@@ -36,22 +79,22 @@ module.exports = class Calculator {
 	};
 
 
-	runParenOperations = (array) => {
-		let base = 1;
-		let parens = array.splice(array.indexOf("("), array.indexOf(")") + 1);
+	// runParenOperations = (array) => {
+	// 	let base = 1;
+	// 	let parens = array.splice(array.indexOf("("), array.indexOf(")") + 1);
 
-		while (parens.includes(")(")) {
-			let c = parens.splice(0, parens.indexOf(")(") + 1);
-			if (c[0] == "(") {
-				c.shift();
-			}
-			c.pop();
-			base = base * this.runRegularOperations(c);
-		}
-		parens.pop();
-		base = base * this.runRegularOperations(parens);
-		return base;
-	};
+	// 	while (parens.includes(")(")) {
+	// 		let c = parens.splice(0, parens.indexOf(")(") + 1);
+	// 		if (c[0] == "(") {
+	// 			c.shift();
+	// 		}
+	// 		c.pop();
+	// 		base = base * this.runRegularOperations(c);
+	// 	}
+	// 	parens.pop();
+	// 	base = base * this.runRegularOperations(parens);
+	// 	return base;
+	// };
 
 	runRegularOperations = (calcArray) => {
 		let result = 0;

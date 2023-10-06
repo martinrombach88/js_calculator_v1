@@ -52,6 +52,17 @@ describe("Calculator", () => {
     //
     })
 
-    
+    test('calculate -> 1+1 = 2', () => {
+    expect(testCalc.calculate('1 + 1')).toStrictEqual(2);
+    })
+
+    test('calculate -> 1 * 2 + 3', () => {
+        expect(testCalc.calculate('1 * 2 + 3')).toStrictEqual(5);
+    })
+
+    test('calculate -> 1+2/3 * (4+5) - 6', () => {
+    expect(testCalc.calculate('1 + 2 / 3 * ( 4 + 5 ) - 6')).toStrictEqual(1)
+    })
+
 })
 

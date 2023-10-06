@@ -6,13 +6,12 @@ module.exports = class Calculator {
 	}
 
 
-	calculate = () => {
-		let userCalculation = prompt("Please enter your calculation");
+	calculate = (userCalculation) => {
+		// let userCalculation = prompt("Please enter your calculation");
 		let calcArray = this.getInputArray(userCalculation)
-		let parens = this.runParenOperations(calcArray);
-		calcArray = parens != 0 ? [parens, ...calcArray] : calcArray;
-		let result = this.runRegularOperations(calcArray);
-		alert(`${userCalculation} = ${result}`);
+		let postfixArray = this.convertInfixToPostfix(calcArray)
+		return this.runPostfixOperations(postfixArray)
+		// alert(`${userCalculation} = ${result}`);
 	};
 
 	getInputArray = (userInput) => {
@@ -42,7 +41,6 @@ module.exports = class Calculator {
 		//slice our all relevant operators and delete left bracket, append postfixResult
 		let bracketOperators = stack.splice(stack.indexOf("("), stack.length - 1);
 		bracketOperators.shift()
-		// console.log( [...postfixResult, ...bracketOperators])
 		return [...postfixResult, ...bracketOperators]
 		
 	}
@@ -83,7 +81,6 @@ module.exports = class Calculator {
 				postfixResult.push(opStack.pop())
 				while(this.precedenceSameOrHigher(opStack, c)) {
 					postfixResult.push(opStack.pop())
-					
 				}
 				opStack.push(c)
 				continue
@@ -116,43 +113,26 @@ module.exports = class Calculator {
 		}
 	};
 
-	runRegularOperations = (calcArray) => {
-		let result = 0;
-		let operator = "";
-		let initialResultSet = false;
-		let initialOperatorSet = false;
-
-		for (let current in calcArray) {
-			let item = calcArray[current];
-			if (!initialResultSet && isNaN(item)) {
-				alert("Invalid calculation. Enter a number first.");
-				break;
+	runPostfixOperations(postfixArray) {
+		let stack = []
+		for (let current in postfixArray) {
+			let c = postfixArray[current]
+			if(Number.isInteger(c)) {
+				stack.push(c)
+				continue
 			}
 
-			if (!initialResultSet) {
-				result = item;
-				initialResultSet = true;
-				continue;
+			if(this.isOperator(c)) {
+				let num1 = stack.pop();
+				let num2 = stack.pop();
+				console.log(num1, c, num2)
+				stack.push(this.runOperation(c, num2, num1))
+				continue
 			}
 
-			if (!initialOperatorSet && isNaN(item)) {
-				operator = item;
-				initialOperatorSet = true;
-				continue;
-			}
-
-			if (initialResultSet && initialOperatorSet && isNaN(item)) {
-				operator = item;
-				continue;
-			}
-
-			if (initialResultSet && initialOperatorSet && !isNaN(item)) {
-				result = this.runOperation(operator, result, item);
-				continue;
-			}
+			
 		}
-		return result;
-	};
+		return stack[0]
+	}
+
 }
-
-

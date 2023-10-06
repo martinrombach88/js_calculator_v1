@@ -16,13 +16,13 @@ module.exports = class Calculator {
 	};
 
 	getInputArray = (userInput) => {
+		//create array from regex + if string has two characters, split it
 		return userInput.match(this.regex).flatMap((char) => (char.length > 0 && char.match(this.operators) ? char.split('') : char));
 	}
 
 	precedenceSameOrHigher = (stack, newItem) => {
+		//compare top operator in stack with new item (current iteration)
 		let topItem = stack[stack.length -1]
-		// return topItem
-		//this structure doesn't work.
 		const operationRanks = {
 			"^": 3,
 			"*" : 2, 
@@ -38,31 +38,24 @@ module.exports = class Calculator {
 	}
 	
 	pushBracketOperators = (stack, postfixResult) => {
-		//1. slice from stack lastIndexOf ( to lastIndexOf )
-		//2. pop all from stack -> for each in slice, push to postfix
-		let bracketOperators = stack.splice(stack.lastIndexOf("("), stack.lastIndexOf(")") + 1);
-		//remove left bracket
+		//slice our all relevant operators and delete left bracket, append postfixResult
+		let bracketOperators = stack.splice(stack.indexOf("("), stack.length - 1);
 		bracketOperators.shift()
-		bracketOperators.pop()
-		postfixResult = [...postfixResult, ...bracketOperators.reverse()]
-
-
+		console.log( [...postfixResult, ...bracketOperators])
+		return [...postfixResult, ...bracketOperators]
+		
 	}
 
 	convertInfixToPostfix = (calcArray) => {
+		//opStack acts as a stack, the end is the top, and the start is the bottom (lifo)
 		let postfixResult = []
 		const opStack = []
 		let bracketOpen = false;
-		let bracketStack = []
-		//use pop rather than shift (shift has to reindex)
-		//the end is the top, and the start is the bottom (lifo)
-		//('Convert Infix (A + B) * (C + D) to Postfix A B + C D + *'
 		
 		for (let current in calcArray) {
 			let c = calcArray[current];
 			let temp = parseInt(c);
 			
-			//rule 1 - if operand, push to postfix array
 			if (Number.isInteger(temp)) {
 				postfixResult.push(temp)
 				continue
@@ -75,22 +68,21 @@ module.exports = class Calculator {
 			}
 
 			if (bracketOpen && c === ")") {
-				this.pushBracketOperators(opStack, postfixResult)			
+				postfixResult = this.pushBracketOperators(opStack, postfixResult)		
 				bracketOpen = false
 				continue
 			}
-			//isOperator
 
 			if(this.isOperator(c) && bracketOpen && !this.precedenceSameOrHigher(opStack, c)) {
 				opStack.push(c)
 				continue
 			}
-			//for item in opStack, reverse iterating
-			//rule top cannot be same or higher + keep popping until top doesn't break rule
 			
 			if(this.isOperator(c) && this.precedenceSameOrHigher(opStack, c)) {
-				postfixResult.push(opStack.pop())
-				opStack.push(c)
+				
+					postfixResult.push(opStack.pop())
+					opStack.push(c)
+				
 				continue
 			}
 
@@ -120,24 +112,6 @@ module.exports = class Calculator {
 				return 0;
 		}
 	};
-
-
-	// runParenOperations = (array) => {
-	// 	let base = 1;
-	// 	let parens = array.splice(array.indexOf("("), array.indexOf(")") + 1);
-
-	// 	while (parens.includes(")(")) {
-	// 		let c = parens.splice(0, parens.indexOf(")(") + 1);
-	// 		if (c[0] == "(") {
-	// 			c.shift();
-	// 		}
-	// 		c.pop();
-	// 		base = base * this.runRegularOperations(c);
-	// 	}
-	// 	parens.pop();
-	// 	base = base * this.runRegularOperations(parens);
-	// 	return base;
-	// };
 
 	runRegularOperations = (calcArray) => {
 		let result = 0;

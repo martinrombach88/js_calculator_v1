@@ -49,8 +49,9 @@ module.exports = class Calculator {
 				postfixResult.push(temp)
 				continue
 			}
-			
-			//rule  top cannot be same or higher
+
+			//for item in opStack, reverse iterating
+			//rule top cannot be same or higher + keep popping until top doesn't break rule
 			if(c.match(this.operators) && this.stackMustPop(opStack, c)) {
 				postfixResult.push(opStack.pop())
 				opStack.push(c)

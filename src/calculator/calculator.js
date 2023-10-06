@@ -29,6 +29,7 @@ module.exports = class Calculator {
 			"/": 2,
 			"+": 1,
 			"-": 1,
+			"": 0,
 		}
 		return operationRanks[topItem] >= operationRanks[newItem]
 	}
@@ -41,7 +42,7 @@ module.exports = class Calculator {
 		//slice our all relevant operators and delete left bracket, append postfixResult
 		let bracketOperators = stack.splice(stack.indexOf("("), stack.length - 1);
 		bracketOperators.shift()
-		console.log( [...postfixResult, ...bracketOperators])
+		// console.log( [...postfixResult, ...bracketOperators])
 		return [...postfixResult, ...bracketOperators]
 		
 	}
@@ -79,10 +80,12 @@ module.exports = class Calculator {
 			}
 			
 			if(this.isOperator(c) && this.precedenceSameOrHigher(opStack, c)) {
-				
+				postfixResult.push(opStack.pop())
+				while(this.precedenceSameOrHigher(opStack, c)) {
 					postfixResult.push(opStack.pop())
-					opStack.push(c)
-				
+					
+				}
+				opStack.push(c)
 				continue
 			}
 

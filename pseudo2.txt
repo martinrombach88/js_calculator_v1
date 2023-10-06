@@ -28,11 +28,18 @@ pop the top element and add to postfix.
 pop the top element and add to postfix. If the top element is lower,
 the higher element can be added.
 
-4. If there is a left bracket, push element to stack
+4. If there is a left bracket...
 
-5. Right bracket?
+5. If there is a right bracket closes around an operator, you need to pop everything in the parens out into the stack
+
+6. When any rule is broken, pop all numbers that are broken. 
+E.g. current num is -. stack contains * +.
+* and + must be popped at this point.
+
 
 TDD:- 
 infix/postfix has a lot of moving parts. break it down into individual output you expect.
-1. opStack should collect the operators O 
-2. 
+1. opStack should collect the operators and postfix collect all the numbers O 
+2. opStack should compare current with top of stack, if new element is same or higher, pop opStack and add current 
+
+Now you need to define the order for when this function is called. 

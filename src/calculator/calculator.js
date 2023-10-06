@@ -19,18 +19,18 @@ module.exports = class Calculator {
 		return userInput.match(this.regex).flatMap((char) => (char.length > 0 && char.match(this.operators) ? char.split('') : char));
 	}
 
-	stackMustPop = (stackTopElement, newElement) => {
-		const operatorRanks = {
-			'^': 3,
-			'*': 2,
-			'/': 2, 
-			'+': 1,
-			'-': 1
+	stackMustPop = (stack, newItem) => {
+		let topItem = stack[stack.length -1]
+		// return topItem
+		//this structure doesn't work.
+		const operationRanks = {
+			"^": 3,
+			"*" : 2, 
+			"/": 2,
+			"+": 1,
+			"-": 1,
 		}
-		if (operatorRanks[stackTopElement] == operatorRanks[newElement]) {
-			return true;
-		}
-		return operatorRanks[stackTopElement] > operatorRanks[newElement]
+		return operationRanks[topItem] >= operationRanks[newItem]
 	}
 
 	convertInfixToPostfix = (calcArray) => {
@@ -42,23 +42,27 @@ module.exports = class Calculator {
 		
 		for (let current in calcArray) {
 			let c = calcArray[current];
-			 let temp = parseInt(c);
+			let temp = parseInt(c);
 
-			//rule one - if operand, push to postfix array
+			//rule 1 - if operand, push to postfix array
 			if (Number.isInteger(temp)) {
 				postfixResult.push(temp)
 				continue
 			}
-			if (c.match(this.operators)) {
+			
+			//rule  top cannot be same or higher
+			if(c.match(this.operators) && this.stackMustPop(opStack, c)) {
+				postfixResult.push(opStack.pop())
 				opStack.push(c)
-				continue
+			}
+
+			if(c.match(this.operators) && !this.stackMustPop(opStack, c)) {
+				opStack.push(c)
 			}
 
 		}
-		return {0: postfixResult, 1:opStack}
-		
-		
-
+		return postfixResult
+		// return {'opStack': opStack, 'postfixStack': postfixResult}
 	}
 
 	runOperation = (operator, base, newnum) => {

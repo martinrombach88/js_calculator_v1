@@ -28,9 +28,9 @@ pop the top element and add to postfix.
 pop the top element and add to postfix. If the top element is lower,
 the higher element can be added.
 
-4. If there is a left bracket...
+4. If there is a left bracket wait for right
 
-5. If there is a right bracket closes around an operator, you need to pop everything in the parens out into the stack
+5. If there is a right bracket, pop everything after the left bracket. 
 
 6. When any rule is broken, pop all numbers that are broken. 
 E.g. current num is -. stack contains * +.

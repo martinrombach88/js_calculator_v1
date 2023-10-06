@@ -19,7 +19,7 @@ module.exports = class Calculator {
 		return userInput.match(this.regex).flatMap((char) => (char.length > 0 && char.match(this.operators) ? char.split('') : char));
 	}
 
-	stackMustPop = (stack, newItem) => {
+	precedenceSameOrHigher = (stack, newItem) => {
 		let topItem = stack[stack.length -1]
 		// return topItem
 		//this structure doesn't work.
@@ -33,9 +33,27 @@ module.exports = class Calculator {
 		return operationRanks[topItem] >= operationRanks[newItem]
 	}
 
+	isOperator = (item) => {
+		return item.match(this.operators)
+	}
+	
+	pushBracketOperators = (stack, postfixResult) => {
+		//1. slice from stack lastIndexOf ( to lastIndexOf )
+		//2. pop all from stack -> for each in slice, push to postfix
+		let bracketOperators = stack.splice(stack.lastIndexOf("("), stack.lastIndexOf(")") + 1);
+		//remove left bracket
+		bracketOperators.shift()
+		bracketOperators.pop()
+		postfixResult = [...postfixResult, ...bracketOperators.reverse()]
+
+
+	}
+
 	convertInfixToPostfix = (calcArray) => {
-		const postfixResult = []
+		let postfixResult = []
 		const opStack = []
+		let bracketOpen = false;
+		let bracketStack = []
 		//use pop rather than shift (shift has to reindex)
 		//the end is the top, and the start is the bottom (lifo)
 		//('Convert Infix (A + B) * (C + D) to Postfix A B + C D + *'
@@ -43,27 +61,49 @@ module.exports = class Calculator {
 		for (let current in calcArray) {
 			let c = calcArray[current];
 			let temp = parseInt(c);
-
+			
 			//rule 1 - if operand, push to postfix array
 			if (Number.isInteger(temp)) {
 				postfixResult.push(temp)
 				continue
 			}
 
-			//for item in opStack, reverse iterating
-			//rule top cannot be same or higher + keep popping until top doesn't break rule
-			if(c.match(this.operators) && this.stackMustPop(opStack, c)) {
-				postfixResult.push(opStack.pop())
+			if(c === "(") {
 				opStack.push(c)
+				bracketOpen = true;
+				continue
 			}
 
-			if(c.match(this.operators) && !this.stackMustPop(opStack, c)) {
+			if (bracketOpen && c === ")") {
+				this.pushBracketOperators(opStack, postfixResult)			
+				bracketOpen = false
+				continue
+			}
+			//isOperator
+
+			if(this.isOperator(c) && bracketOpen && !this.precedenceSameOrHigher(opStack, c)) {
 				opStack.push(c)
+				continue
+			}
+			//for item in opStack, reverse iterating
+			//rule top cannot be same or higher + keep popping until top doesn't break rule
+			
+			if(this.isOperator(c) && this.precedenceSameOrHigher(opStack, c)) {
+				postfixResult.push(opStack.pop())
+				opStack.push(c)
+				continue
+			}
+
+			if(this.isOperator(c) && !this.precedenceSameOrHigher(opStack, c)) {
+				opStack.push(c)
+				continue
 			}
 
 		}
+		if(opStack.length > 0 ) {
+			postfixResult = [...postfixResult, ...opStack.reverse()]
+		}
 		return postfixResult
-		// return {'opStack': opStack, 'postfixStack': postfixResult}
 	}
 
 	runOperation = (operator, base, newnum) => {

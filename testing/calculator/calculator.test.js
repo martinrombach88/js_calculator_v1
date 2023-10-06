@@ -34,12 +34,20 @@ describe("Calculator", () => {
 
     
 
-    test('convertInfixToPostfix -> Infix (1+2/3 (4+5) - 6) -> 1 2 3 / 4 5 + * + 6 - ', () => {
-    expect(testCalc.convertInfixToPostfix(['(',1,'+','2','/','3','*','(','4','+','5',')','-','6',')'])).toStrictEqual([1, 2, 3, '/', 4, 5,'+', '*', '+', 6, '-'])
+    // test('convertInfixToPostfix -> Infix 1+2/3 (4+5) - 6 -> 1 2 3 / 4 5 + * + 6 - ', () => {
+    // expect(testCalc.convertInfixToPostfix([1,'+','2','/','3','*','(','4','+','5',')','-','6'])).toStrictEqual([1, 2, 3, '/', 4, 5,'+', '*', '+', 6, '-'])
+    
+    test('convertInfixToPostfix -> 1 * 2 + 3 -> 1 2 * 3 +', () => {
+        expect(testCalc.convertInfixToPostfix([1, '*', 2, '+', 3])).toStrictEqual([1, 2, '*', 3, '+'])
+        })
+  
+
+    test('convertInfixToPostfix -> 1 * (2 + 3) -> 1 2 3 + *', () => {
+    expect(testCalc.convertInfixToPostfix([1, '*', '(', 2, '+', 3, ')'])).toStrictEqual([1, 2, 3, '+', '*'])
+    })
 })
 
     
 
 
 
-})

@@ -3,29 +3,43 @@ const Calculator = require("../../src/calculator/calculator")
 describe("Calculator", () => {
     const testCalc = new Calculator()
 
-    test('Separate 1+1 String into array', () => {
-        expect(testCalc.getInputCalculationArray("1+1")).toStrictEqual(['1', '+', '1'])
+
+    test('getInputArray -> 1+1 becomes [1 + 1]', () => {
+        expect(testCalc.getInputArray("1+1")).toStrictEqual(['1', '+', '1'])
         })
 
-    // test('Separate (1+1)(1+1)((1+1)(1+1))(1+1) String into array', () => {
-    //     expect(testCalc.getInputCalculationArray('(1+1)(1+1)((1+1)(1+1))(1+1)')).toStrictEqual(['(','1', '+', '1',')','(','1', '+', '1',')','(','(','1', '+', '1',')','(','1', '+', '1',')' ])
-    //     })
-    test('Separate (1+1)(1+1) String into array', () => {
-        expect(testCalc.getInputCalculationArray('(1+1)(1+1)')).toStrictEqual(['(','1','+','1',')','(','1','+','1',')'])
+    test('getInputArray -> (1+1)(1+1) becomes [ ( 1 + 1 ) ( 1 + 1 ) ]', () => {
+        expect(testCalc.getInputArray('(1+1)(1+1)')).toStrictEqual(['(','1','+','1',')','(','1','+','1',')'])
         })
 
-    test('Separate )( String into array', () => {
-        expect(testCalc.getInputCalculationArray(')(')).toStrictEqual([')','('])
+    test('getInputArray -> )( becomes [ ) ( ]', () => {
+        expect(testCalc.getInputArray(')(')).toStrictEqual([')','('])
         })
-    // test('Expect output', () => {
-    //     expect(testCalc.getInputCalculationArray('(1+1)(1+1)')).anything()
-    // })
-    test('Convert Infix A + B * C + D to Postfix A B C * + D +', () => {
-        expect(testCalc.convertInfixToPostfix(['2','+','3','*','2','+','3'])).toStrictEqual(['2','3','2','*','+','3','+'])
+    
+    test('convertInfixToPostfix -> 1 * 2 + 3 -> 1 2 * 3 +', () => {
+        expect(testCalc.convertInfixToPostfix(['1', '*', '2', '+', '3'])).toStrictEqual([1, 2, '*', 3, '+'])
+        })
+
+    test('convertInfixToPostfix -> 1 * (2 + 3) -> 1 2 3 + *', () => {
+        expect(testCalc.convertInfixToPostfix(['1', '*', '(', '2', '+', '3', ')'])).toStrictEqual([1, 2, 3, '+', '*'])
     })
 
-    test('Convert Infix (A + B) * (C + D) to Postfix A B + C D + *', () => {
-        expect(testCalc.convertInfixToPostfix(['(','5','+','5',')','*','(','5','+','5',')'])).toStrictEqual(['5','5','+','5','5','+','*'])
+    test('convertInfixToPostfix -> Infix 1+2/3 * (4+5) - 6 -> 1 2 3 / 4 5 + * + 6 - ', () => {
+        expect(testCalc.convertInfixToPostfix(['1','+', '2' ,'/','3','*','(','4','+','5',')','-','6'])).toStrictEqual([1, 2, 3, '/', 4, 5,'+', '*', '+', 6, '-'])
+
+    })
+
+    test('calculate -> 1+1 = 2', () => {
+        expect(testCalc.calculate('1 + 1')).toStrictEqual(2);
+    })
+
+    test('calculate -> 1 * 2 + 3', () => {
+        expect(testCalc.calculate('1 * 2 + 3')).toStrictEqual(5);
+    })
+
+    test('calculate -> 1+2/3 * (4+5) - 6', () => {
+    expect(testCalc.calculate('1 + 2 / 3 * ( 4 + 5 ) - 6')).toStrictEqual(1)
     })
 
 })
+

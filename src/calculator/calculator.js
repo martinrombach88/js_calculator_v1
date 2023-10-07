@@ -1,17 +1,17 @@
-module.exports = class Calculator {
-//export default class Calculator {
+// module.exports = class Calculator {
+export default class Calculator {
 	constructor () {
 		this.regex = /\d+|[\(\)\+\-\*\//]+/g;
 		this.operators = /[\(\)\+\-\*\//]+/g;
 	}
 
 
-	calculate = (userCalculation) => {
-		// let userCalculation = prompt("Please enter your calculation");
+	calculate = () => {
+		let userCalculation = prompt("Please enter your calculation");
 		let calcArray = this.getInputArray(userCalculation)
 		let postfixArray = this.convertInfixToPostfix(calcArray)
-		return this.runPostfixOperations(postfixArray)
-		// alert(`${userCalculation} = ${result}`);
+		//return this.runPostfixOperations(postfixArray)
+		alert(`${userCalculation} = ${this.runPostfixOperations(postfixArray)}`);
 	};
 
 	getInputArray = (userInput) => {
@@ -20,7 +20,7 @@ module.exports = class Calculator {
 	}
 
 	precedenceSameOrHigher = (stack, newItem) => {
-		//compare top operator in stack with new item (current iteration)
+		//compare top operators in stack with new item (current iteration)
 		let topItem = stack[stack.length -1]
 		const operationRanks = {
 			"^": 3,
@@ -79,6 +79,8 @@ module.exports = class Calculator {
 			
 			if(this.isOperator(c) && this.precedenceSameOrHigher(opStack, c)) {
 				postfixResult.push(opStack.pop())
+
+				//keep comparing and empty stack of rule breaking items
 				while(this.precedenceSameOrHigher(opStack, c)) {
 					postfixResult.push(opStack.pop())
 				}
@@ -125,7 +127,6 @@ module.exports = class Calculator {
 			if(this.isOperator(c)) {
 				let num1 = stack.pop();
 				let num2 = stack.pop();
-				console.log(num1, c, num2)
 				stack.push(this.runOperation(c, num2, num1))
 				continue
 			}

@@ -1,16 +1,31 @@
-// module.exports = class Calculator {
+/* test function - uncomment and replace default constructor to view tests
+
+module.exports = class Calculator {
+	constructor () {
+		this.regex = /\d+|[\(\)\+\-\*\//]+/g;
+		this.operators = /[\(\)\+\-\*\//]+/g;
+	}
+
+*/
+
 export default class Calculator {
 	constructor () {
 		this.regex = /\d+|[\(\)\+\-\*\//]+/g;
 		this.operators = /[\(\)\+\-\*\//]+/g;
 	}
 
+	testCalculate = (userCalculation) => {
+		//test version of main calculate
+		let calcArray = this.getInputArray(userCalculation)
+		let postfixArray = this.convertInfixToPostfix(calcArray)
+		return this.runPostfixOperations(postfixArray)
+	}
 
 	calculate = () => {
+		//main function to run all the supplementary functions
 		let userCalculation = prompt("Please enter your calculation");
 		let calcArray = this.getInputArray(userCalculation)
 		let postfixArray = this.convertInfixToPostfix(calcArray)
-		//return this.runPostfixOperations(postfixArray)
 		alert(`${userCalculation} = ${this.runPostfixOperations(postfixArray)}`);
 	};
 
